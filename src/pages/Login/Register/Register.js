@@ -12,14 +12,14 @@ const Register = () => {
     const { btnCustom } = useStyle()
     const [loginData, setloginData] = useState({})
     const { user, registerUser, error, isLoading } = useAuth()
-    const location = useLocation()
+
     const history = useHistory()
-    const handleOnChange = e => {
+    const handleOnBlur = e => {
         const field = e.target.name;
         const value = e.target.value;
         const newLoginData = { ...loginData };
         newLoginData[field] = value;
-        console.log(field, value, loginData)
+        console.log(newLoginData)
         setloginData(newLoginData)
 
     }
@@ -28,7 +28,7 @@ const Register = () => {
             alert('Your Password did not match')
             return
         }
-        registerUser(loginData.email, loginData.password, location, history)
+        registerUser(loginData.email, loginData.password, loginData.name, history)
         e.preventDefault()
     }
 
@@ -42,10 +42,19 @@ const Register = () => {
                         <Typography variant="h4" sx={{ color: "#1CC7C1", fontWeight: '600', textAlign: 'center' }} gutterBottom>Register</Typography>
                         <Box sx={{ textAlign: 'center' }}>
                             {isLoading && <CircularProgress />}
-                            {user?.email ? <Alert severity="success">User Created Successfully !</Alert> : <Alert severity="warning"> Please put valid Information !</Alert>}
-                            {error && <Alert severity="success">{error}</Alert>}
+                            {user?.email ? <Alert severity="success" sx={{ width: "85%" }}>User Created Successfully !</Alert> : <Alert severity="warning" sx={{ mt: 2, width: "85%" }}> Please put valid Information !</Alert>}
+                            {error && <Alert severity="error" sx={{ mt: 2, mb: 5, width: "85%" }}>{error}</Alert>}
                         </Box>
                         <form onSubmit={handelSubmit} >
+                            <TextField
+                                id="standard basic"
+                                style={{ width: '90%' }}
+                                label="Your Name"
+                                variant="standard"
+                                name="name"
+                                type="text"
+                                onBlur={handleOnBlur}
+                            /> <br />
                             <TextField
                                 id="standard basic"
                                 style={{ width: '90%' }}
@@ -53,21 +62,21 @@ const Register = () => {
                                 variant="standard"
                                 name="email"
                                 type="email"
-                                onChange={handleOnChange}
+                                onBlur={handleOnBlur}
                             /> <br />
                             <TextField
                                 id="standard basic"
                                 name="password"
-                                onChange={handleOnChange}
+                                onBlur={handleOnBlur}
                                 label="Your Password"
                                 type="password"
                                 style={{ width: '90%' }}
                                 variant="standard"
-                            /> <br /> <br />
+                            /> <br />
                             <TextField
                                 id="standard basic"
                                 name="password2"
-                                onChange={handleOnChange}
+                                onBlur={handleOnBlur}
                                 label="Retype Password"
                                 type="password"
                                 style={{ width: '90%' }}

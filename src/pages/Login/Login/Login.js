@@ -7,11 +7,12 @@ import { NavLink } from 'react-router-dom';
 import { useHistory, useLocation } from 'react-router';
 import useAuth from '../../../hooks/useAuth';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Box } from '@mui/system';
 
 const Login = () => {
     const { btnCustom } = useStyle()
     const [loginData, setloginData] = useState({})
-    const { user, loginUser, error, isLoading } = useAuth()
+    const { user, loginUser, error, isLoading, signInWithGoogle } = useAuth()
 
     const location = useLocation()
     const history = useHistory()
@@ -28,6 +29,9 @@ const Login = () => {
         e.preventDefault()
         loginUser(loginData.email, loginData.password, location, history)
     }
+    const signInGoogle = () => {
+        signInWithGoogle(location, history)
+    }
 
 
     return (
@@ -37,9 +41,11 @@ const Login = () => {
                 <Grid container spacing={2} sx={{ alignItems: 'center' }}>
                     <Grid item xl={6} lg={6} md={6} sm={12} xs={12} >
                         <Typography variant="h4" sx={{ color: "#1CC7C1", fontWeight: '600', textAlign: 'center' }} gutterBottom>Login</Typography>
-                        {isLoading && <CircularProgress />}
-                        {user?.email ? <Alert severity="success" sx={{ width: "85%" }}>User Created Successfully !</Alert> : <Alert severity="warning" sx={{ width: "85%" }}> Please put valid Information !</Alert>}
-                        {error && <Alert severity="error" sx={{ mt: 2, mb: 5, width: "85%" }}>{error}</Alert>}
+                        <Box sx={{ textAlign: 'center' }} >
+                            {isLoading && <CircularProgress />}
+                            {user?.email ? <Alert severity="success" sx={{ width: "85%" }}>User Created Successfully !</Alert> : <Alert severity="warning" sx={{ width: "85%" }}> Please put valid Information !</Alert>}
+                            {error && <Alert severity="error" sx={{ mt: 2, mb: 5, width: "85%" }}>{error}</Alert>}
+                        </Box>
                         <form onSubmit={handelSubmit} >
                             <TextField
                                 style={{ width: '90%' }}
@@ -62,6 +68,7 @@ const Login = () => {
                                 <Button variant="text" sx={{ width: "90%", color: "#1CC7C1", }} >Dont' have account? Please Register </Button>
                             </NavLink>
                         </form>
+                        <Button onClick={signInGoogle} style={btnCustom} sx={{ width: "90%" }}>Google Signin</Button>
                     </Grid>
                     <Grid item xl={6} lg={6} md={6} sm={12} xs={12} sx={{ textAlign: 'right' }}>
                         <img src={loginBg} style={{ width: '85%' }} alt="" />

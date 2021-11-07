@@ -7,7 +7,8 @@ import Button from '@mui/material/Button';
 
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+import { Link, } from 'react-router-dom';
+
 import useAuth from '../../../hooks/useAuth';
 
 
@@ -35,13 +36,19 @@ const Navigation = () => {
                     <Link to="/appointment" style={{ color: 'white', textDecoration: 'none', marginRight: '30px', fontWeight: 600 }}>
                         Appointment
                     </Link>
+
                     <Link style={{ color: 'white', textDecoration: 'none', marginRight: '30px', fontWeight: 600 }}>
                         {user.email}
                     </Link>
                     {
-                        user?.email ? <Button onClick={logOut} style={{ color: 'white', textDecoration: 'none', marginRight: '30px', fontWeight: 600 }}>
-                            Logout
-                        </Button> : <Link to="/login" style={{ color: 'white', textDecoration: 'none', marginRight: '30px', fontWeight: 600 }}>
+                        user?.email ? <Box>
+                            <Link to="/dashboard" style={{ color: 'white', textDecoration: 'none', marginRight: '30px', fontWeight: 600 }}>
+                                Dashboard
+                            </Link>
+                            <Button onClick={logOut} style={{ color: 'white', textDecoration: 'none', marginRight: '30px', fontWeight: 600 }}>
+                                Logout
+                            </Button>
+                        </Box> : <Link to="/login" style={{ color: 'white', textDecoration: 'none', marginRight: '30px', fontWeight: 600 }}>
                             Login
                         </Link>
                     }
