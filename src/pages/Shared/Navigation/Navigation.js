@@ -37,11 +37,9 @@ const Navigation = () => {
                         Appointment
                     </Link>
 
-                    <Link style={{ color: 'white', textDecoration: 'none', marginRight: '30px', fontWeight: 600 }}>
-                        {user.email}
-                    </Link>
+
                     {
-                        user?.email ? <Box>
+                        user?.email ? <Box sx={{ alignItems: 'center' }}>
                             <Link to="/dashboard" style={{ color: 'white', textDecoration: 'none', marginRight: '30px', fontWeight: 600 }}>
                                 Dashboard
                             </Link>
@@ -52,6 +50,9 @@ const Navigation = () => {
                             Login
                         </Link>
                     }
+                    <Button style={{ color: 'white', textDecoration: 'none', marginRight: '30px', fontWeight: 600 }}>
+                        {user.displayName}
+                    </Button>
 
 
                 </Toolbar>

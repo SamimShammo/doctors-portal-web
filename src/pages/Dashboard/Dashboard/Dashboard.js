@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,15 +15,26 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Calendar from '../../Shared/Calendar/Calendar/Calendar'
-import { Grid } from '@mui/material';
-import Appointments from '../Appointments/Appointments';
+
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useParams,
+    useRouteMatch
+} from "react-router-dom";
+import DashboardHome from '../DashboardHome/DashboardHome';
+import MakeAdmin from '../MakeAdmin/MakeAdmin';
+import AddDoctor from '../AddDoctor/AddDoctor';
 
 const drawerWidth = 200;
 
 function Dashboard(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    let { path, url } = useRouteMatch();
+
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -33,6 +44,20 @@ function Dashboard(props) {
         <div>
             <Toolbar />
             <Divider />
+            <List>
+                <Link to="/appointment" style={{ color: 'black', textAlign: 'center', marginLeft: '50px', textDecoration: 'none', fontWeight: 400 }}>
+                    Appointment
+                </Link> <br />
+                <Link to={`${url}/dashboardHome`} style={{ color: 'black', textAlign: 'center', marginLeft: '50px', textDecoration: 'none', fontWeight: 400 }}>
+                    Dashboard
+                </Link> <br />
+                <Link to={`${url}/makeAdmin`} style={{ color: 'black', textAlign: 'center', marginLeft: '50px', textDecoration: 'none', fontWeight: 400 }}>
+                    Make Admin
+                </Link> <br />
+                <Link to={`${url}/addDoctor`} style={{ color: 'black', textAlign: 'center', marginLeft: '50px', textDecoration: 'none', fontWeight: 400 }}>
+                    Add Doctor
+                </Link>
+            </List>
             <List>
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem button key={text}>
@@ -46,7 +71,7 @@ function Dashboard(props) {
                 ))}
             </List>
 
-        </div>
+        </div >
     );
 
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -116,16 +141,21 @@ function Dashboard(props) {
                     sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
                 >
                     <Toolbar />
-                    <Typography>
-                        <Grid container spacing={2}>
-                            <Grid item xl={4} lg={4} md={4} sm={12} xs={12}>
-                                <Calendar></Calendar>
-                            </Grid>
-                            <Grid item xl={8} lg={8} md={8} sm={12} xs={12}>
-                                <Appointments></Appointments>
-                            </Grid>
-                        </Grid>
-                    </Typography>
+                    <Switch>
+                        <Route exact path={path}>
+                            Dashboard Home
+                        </Route>
+                        <Route path={`${path}/makeAdmin`}>
+                            <MakeAdmin></MakeAdmin>
+                        </Route>
+                        <Route path={`${path}/addDoctor`}>
+                            <AddDoctor></AddDoctor>
+                        </Route>
+                        <Route path={`${path}/dashboardHome`}>
+                            <DashboardHome></DashboardHome>
+                        </Route>
+                    </Switch>
+
                 </Box>
             </Box>
         </>
