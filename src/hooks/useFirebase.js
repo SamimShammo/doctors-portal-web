@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, updateProfile } from "firebase/auth";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, updateProfile, getIdToken } from "firebase/auth";
 
 import initializeAuthentication from '../pages/Login/firebase/firebase.init';
 initializeAuthentication()
@@ -9,6 +9,8 @@ const useFirebase = () => {
     const [user, setUser] = useState({})
     const [error, setError] = useState('')
     const auth = getAuth();
+    const [admin, setAdmin] = useState(false)
+    const [token, setToken] = useState('')
 
     const registerUser = (email, password, name, history) => {
         setIsLoading(true)
@@ -22,9 +24,10 @@ const useFirebase = () => {
                 setError('')
                 updateProfile(auth.currentUser, {
                     displayName: name
-                }).then(() => {
-
                 })
+                    .then(() => {
+
+                    })
                     .catch((error) => {
                         setError(error.message)
                         // ..
@@ -79,6 +82,10 @@ const useFirebase = () => {
             if (user) {
                 setUser(user)
                 setError('')
+                getIdToken(user)
+                    .then(idToken => {
+                        setToken(idToken)
+                    })
             } else {
                 setUser({})
             }
@@ -86,6 +93,11 @@ const useFirebase = () => {
         });
         return () => unSubscriber;
     }, [])
+    useEffect(() => {
+        fetch(`http://localhost:5000/users/${user.email}`)
+            .then(res => res.json())
+            .then(data => setAdmin(data.admin))
+    }, [user.email])
 
     const logOut = () => {
         signOut(auth).then(() => {
@@ -107,7 +119,11 @@ const useFirebase = () => {
         })
             .then()
     }
+
+
     return {
+        token,
+        admin,
         isLoading,
         user,
         error,

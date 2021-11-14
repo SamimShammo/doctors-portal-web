@@ -32,7 +32,6 @@ const Register = () => {
         e.preventDefault()
     }
 
-
     return (
         <>
             <Navigation></Navigation>

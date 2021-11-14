@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { BrowserRouter, Switch, useLocation, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, useLocation, Route } from "react-router-dom";
 import Home from "./pages/Home/Home/Home";
 import AvailableAppointment from "./pages/Appointment/AvailableAppointment/AvailableAppointment";
 import Appointment from "./pages/Appointment/Appointment/Appointment";
@@ -11,11 +11,12 @@ import PrivateRoute from "./pages/Login/PrivateRoute/PrivateRoute";
 import Dashboard from "./pages/Dashboard/Dashboard/Dashboard";
 
 
+
 function App() {
   return (
     <div className="App">
       <AuthProvider>
-        <BrowserRouter>
+        <Router>
           <Switch>
             <Route exact path="/">
               <Home></Home>
@@ -35,11 +36,11 @@ function App() {
             <Route path="/register">
               <Register></Register>
             </Route>
-            <Route path="/dashboard">
+            <PrivateRoute path="/dashboard">
               <Dashboard></Dashboard>
-            </Route>
+            </PrivateRoute>
           </Switch>
-        </BrowserRouter>
+        </Router>
       </AuthProvider>
     </div>
   );

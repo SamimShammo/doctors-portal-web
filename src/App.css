@@ -1,4 +1,6 @@
-.App {}
+.App {
+  font-family: 'Raleway', sans-serif;
+}
 
 .App-logo {
   height: 40vmin;

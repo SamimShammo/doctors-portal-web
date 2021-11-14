@@ -27,6 +27,8 @@ import {
 import DashboardHome from '../DashboardHome/DashboardHome';
 import MakeAdmin from '../MakeAdmin/MakeAdmin';
 import AddDoctor from '../AddDoctor/AddDoctor';
+import useAuth from '../../../hooks/useAuth';
+import AdminRoute from '../AdminRoute/AdminRoute';
 
 const drawerWidth = 200;
 
@@ -34,7 +36,7 @@ function Dashboard(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     let { path, url } = useRouteMatch();
-
+    const { admin } = useAuth()
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -45,18 +47,16 @@ function Dashboard(props) {
             <Toolbar />
             <Divider />
             <List>
-                <Link to="/appointment" style={{ color: 'black', textAlign: 'center', marginLeft: '50px', textDecoration: 'none', fontWeight: 400 }}>
-                    Appointment
-                </Link> <br />
-                <Link to={`${url}/dashboardHome`} style={{ color: 'black', textAlign: 'center', marginLeft: '50px', textDecoration: 'none', fontWeight: 400 }}>
+                <br />
+                <Link to={`${url}/pay`} style={{ color: 'black', textAlign: 'center', marginLeft: '50px', textDecoration: 'none', fontWeight: 400 }}>
                     Dashboard
                 </Link> <br />
-                <Link to={`${url}/makeAdmin`} style={{ color: 'black', textAlign: 'center', marginLeft: '50px', textDecoration: 'none', fontWeight: 400 }}>
+                {admin && <box><Link to={`${url}/makeAdmin`} style={{ color: 'black', textAlign: 'center', marginLeft: '50px', textDecoration: 'none', fontWeight: 400 }}>
                     Make Admin
                 </Link> <br />
-                <Link to={`${url}/addDoctor`} style={{ color: 'black', textAlign: 'center', marginLeft: '50px', textDecoration: 'none', fontWeight: 400 }}>
-                    Add Doctor
-                </Link>
+                    <Link to={`${url}/addDoctor`} style={{ color: 'black', textAlign: 'center', marginLeft: '50px', textDecoration: 'none', fontWeight: 400 }}>
+                        Add Doctor
+                    </Link></box>}
             </List>
             <List>
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
@@ -145,12 +145,12 @@ function Dashboard(props) {
                         <Route exact path={path}>
                             Dashboard Home
                         </Route>
-                        <Route path={`${path}/makeAdmin`}>
+                        <AdminRoute path={`${path}/makeAdmin`}>
                             <MakeAdmin></MakeAdmin>
-                        </Route>
-                        <Route path={`${path}/addDoctor`}>
+                        </AdminRoute>
+                        <AdminRoute path={`${path}/addDoctor`}>
                             <AddDoctor></AddDoctor>
-                        </Route>
+                        </AdminRoute>
                         <Route path={`${path}/dashboardHome`}>
                             <DashboardHome></DashboardHome>
                         </Route>
